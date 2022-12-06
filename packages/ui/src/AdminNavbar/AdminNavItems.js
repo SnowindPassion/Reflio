@@ -201,17 +201,18 @@ export const AdminNavItems = () => {
           }
           {
             typeof Canny !== 'undefined' &&
-            <div
+            <button
+              data-canny-changelog
               className={classNames(
                 navItemClass,
                 'w-full'
               )}
             >
-              <button className="flex items-center" data-canny-changelog>
+              <div className="flex items-center">
                 <BellIcon className="mr-2 flex-shrink-0 h-5 w-5" aria-hidden="true" />
                 <span>What's New</span>
-              </button>
-            </div>
+              </div>
+            </button>
           }
           <Link
             passHref

@@ -5,7 +5,7 @@ import { getCompanies, useUser, newTeam } from './useUser';
 export const CompanyContext = createContext();
 
 export const CompanyContextProvider = (props) => {
-  const { user, team, userFinderLoaded, signOut } = useUser();
+  const { user, team, userFinderLoaded } = useUser();
   const [userCompanyDetails, setUserCompanyDetails] = useState(null);
   const [creatingTeam, setCreatingTeam] = useState(false);
   const router = useRouter();
@@ -38,18 +38,6 @@ export const CompanyContextProvider = (props) => {
     : 
       router.replace('/dashboard/'+userCompanyDetails[0].company_id+'')
   }
-
-  // if(userCompanyDetails !== null && userCompanyDetails?.length > 0 && router?.asPath?.includes('undefined')){
-  //   userCompanyDetails?.filter(company=>company?.active_company === true)?.length > 0 ?      
-  //     router.replace('/dashboard/'+userCompanyDetails?.filter(company=>company?.active_company === true)[0].company_id+'')
-  //   : 
-  //     router.replace('/dashboard/'+userCompanyDetails[0].company_id+'')
-  // }
-
-  // if(userCompanyDetails === null && router?.asPath?.includes('undefined')){
-  //   signOut();
-  //   router.replace('/signin');
-  // }
 
   let activeCompany = router?.query?.companyId ? userCompanyDetails?.filter(company => company?.company_id === router?.query?.companyId) : userCompanyDetails?.filter(company => company?.active_company === true)?.length > 0 ? userCompanyDetails?.filter(company => company?.active_company === true) : Array.isArray(userCompanyDetails) ? userCompanyDetails[0] : userCompanyDetails;
   if(Array.isArray(activeCompany)){

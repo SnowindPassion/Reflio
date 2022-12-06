@@ -67,9 +67,9 @@ export default function AddCompany() {
       
       <div className="wrapper">
         <div>
-          <form className="rounded-xl bg-white max-w-2xl overflow-hidden shadow-lg border-4 border-gray-300 mx-auto" action="#" method="POST" onSubmit={handleSubmit}>
+          <form className="mt-5 rounded-xl bg-white max-w-2xl overflow-hidden shadow-lg border-4 border-gray-300 mx-auto" action="#" method="POST" onSubmit={handleSubmit}>
             <div className="py-6 text-center border-b-4">
-              <h1 className="text-2xl sm:text-3xl tracking-tight font-extrabold">Add company</h1>
+              <h1 className="text-2xl sm:text-3xl tracking-tight font-extrabold">Add Company / Brand</h1>
             </div>
             <div className="p-6">
               <div className="space-y-8 divide-y divide-gray-200">
@@ -85,7 +85,7 @@ export default function AddCompany() {
                             minLength="3"
                             maxLength="25"
                             required
-                            placeholder="e.g. Google"
+                            placeholder="e.g. My Example SaaS"
                             type="text"
                             name="company_name"
                             id="company_name"
@@ -106,7 +106,7 @@ export default function AddCompany() {
                               minLength="3"
                               maxLength="25"
                               required
-                              placeholder="google.com"
+                              placeholder="example.com"
                               type="text"
                               name="company_url"
                               id="company_url"
@@ -115,7 +115,7 @@ export default function AddCompany() {
                               onChange={e=>{setWebsiteUrlInput(e.target.value)}}
                             />
                           </div>
-                          <p className="text-gray-500">Please only include the base domain of your website (e.g. google.com). You do not need to include https:// or www. We will automatically do this on our end.</p>
+                          <p className="text-gray-500">Please only include the base domain of your website (e.g. example.com). You do not need to include https:// or www. We will automatically do this on our end.</p>
                         </div>
                       </div>
 
@@ -131,7 +131,7 @@ export default function AddCompany() {
                               maxLength="25"
                               required
                               value={companyHandleInput}
-                              placeholder="google"
+                              placeholder="exampleName"
                               type="text"
                               name="company_handle"
                               id="company_handle"

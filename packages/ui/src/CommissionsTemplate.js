@@ -101,7 +101,7 @@ export const CommissionsTemplate = ({ page }) => {
   };
 
   const exportCSV = async () => {
-    if(checkedItems?.length === 0) return false;
+    if(checkedItems?.length === 0 && checkedAll === false) return false;
 
     alert('Test mode enabled.')
   }
@@ -181,7 +181,7 @@ export const CommissionsTemplate = ({ page }) => {
                       small
                       gray
                     >
-                      Export {checkedItems.length === 0 ? 'all' : checkedItems.length} {checkedItems?.length > 1 ? 'commissions' : checkedItems?.length === 0 ? 'commissions' : 'commission'} as PayPal CSV
+                      Export {checkedItems.length === 0 && checkedAll === true ? 'all' : checkedItems.length} {checkedItems?.length > 1 ? 'commissions' : checkedItems?.length === 0 ? 'commissions' : 'commission'} as PayPal CSV
                     </Button> 
                   }
                 </div>

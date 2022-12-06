@@ -7,7 +7,7 @@ export default function InnerDashboardPage() {
   const router = useRouter();
   const { activeCompany } = useCompany();
 
-  if(activeCompany?.stripe_account_data === null || activeCompany?.stripe_id === null){
+  if(activeCompany?.payment_integration_type === null){
     router.replace(`/dashboard/${router?.query?.companyId}/setup`);
   } else {
     router.replace(`/dashboard/${router?.query?.companyId}/campaigns`);

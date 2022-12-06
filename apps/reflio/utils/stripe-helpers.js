@@ -235,9 +235,13 @@ export const deleteIntegrationFromDB = async (stripeId) => {
   const { error } = await supabaseAdmin
   .from('companies')
   .update({
-    stripe_id: null
+    payment_integration_type: null,
+    payment_integration_field_one: null,
+    payment_integration_field_two: null,
+    payment_integration_field_three: null,
+    payment_integration_data: null
   })
-  .eq({ stripe_id: stripeId })
+  .eq({ payment_integration_field_one: stripeId })
   if (error) return "error";
 };
 

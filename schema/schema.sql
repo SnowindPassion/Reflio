@@ -120,6 +120,11 @@ create table companies (
   stripe_account_data jsonb,
   domain_verified boolean default false,
   stripe_id text,
+  payment_integration_type text,
+  payment_integration_field_one text,
+  payment_integration_field_two text,
+  payment_integration_field_three text,
+  payment_integration_data jsonb,
   active_company boolean default false,
   created timestamp with time zone default timezone('utc'::text, now()) not null
 );

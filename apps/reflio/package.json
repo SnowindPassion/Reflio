@@ -9,8 +9,6 @@
     "js": "uglifyjs ./scripts/reflio.js -c --mangle --no-annotations --webkit -o ./public/js/reflio.min.js"
   },
   "dependencies": {
-    "@aws-sdk/client-dynamodb": "^3.186.0",
-    "@aws-sdk/lib-dynamodb": "^3.188.0",
     "@babel/preset-env": "^7.16.11",
     "@headlessui/react": "^1.4.0",
     "@heroicons/react": "^1.0.3",
@@ -22,6 +20,7 @@
     "babel-plugin-static-fs": "^3.0.0",
     "classnames": "2.2.6",
     "cors": "^2.8.5",
+    "crypto": "^1.0.1",
     "dotenv": "^16.0.1",
     "eslint-config-custom": "*",
     "eslint-config-next": "^13.0.0",
@@ -33,6 +32,7 @@
     "next-remove-imports": "^1.0.6",
     "next-transpile-modules": "^9.0.0",
     "node-fetch": "2.6.1",
+    "paddle-sdk": "^3.0.0",
     "parcel-bundler": "^1.12.5",
     "postcss": "^8.4.4",
     "react": "^18.2.0",
@@ -53,6 +53,7 @@
     "tailwind-config": "*",
     "tailwindcss": "^3.0.22",
     "ui": "*",
+    "verify-paddle-webhook": "^1.1.0",
     "yarn": "^1.22.11"
   },
   "devDependencies": {
