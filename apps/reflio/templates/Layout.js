@@ -88,6 +88,14 @@ export default function Layout({ children }) {
         />
         {
           defaultPage === true &&
+          <div className="py-2 bg-gradient-to-b from-secondary to-secondary-2">
+            <div className="wrapper text-center">
+              <a href="/signup" className="text-sm md:text-lg text-white font-semibold hover:underline">NEW: <span className="font-medium">Our Paddle integration is now live 🔥</span></a>
+            </div>
+          </div>
+        }
+        {
+          defaultPage === true &&
           <Navbar />
         }
         { 
