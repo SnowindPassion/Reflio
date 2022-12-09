@@ -424,6 +424,13 @@ class rfl {
 
     return convertData;
   }
+  getReferralId(){
+    if(Reflio.checkCookie().referral_id){
+      return Reflio.checkCookie().referral_id
+    } else {
+      return null
+    }
+  }
   async retrieve(referralId, companyId){
     const referralData = await fetch(ReflioAPIRoot+'/retrieve-referral', {
       method: 'POST',
