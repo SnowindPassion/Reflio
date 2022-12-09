@@ -25,7 +25,7 @@ export const Features = () => {
     },
     {
       name: 'Subscriptions or one-time charges',
-      description: 'Reflio works with both subscriptions and one-time payments in Stripe. Future subscription payments that came from a referral are handled automatically and re-collected in your dashboard.',
+      description: 'Reflio works with both subscriptions and one-time payments in both Stripe and Paddle. Future subscription payments that came from a referral are handled automatically and re-collected in your dashboard.',
       active: true,
       icon: CreditCardIcon
     },
