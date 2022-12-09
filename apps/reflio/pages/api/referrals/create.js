@@ -5,13 +5,13 @@ import { withSentry } from '@sentry/nextjs';
 const createReferral = async (req, res) => {
   if (req.method === 'POST') {
     const token = req.headers.token;
-    const { companyId, campaignId, affiliateId, emailAddress, stripeAccountId, paymentIntentId } = req.body;
+    const { companyId, campaignId, affiliateId, emailAddress, orderId } = req.body;
     
     try {
       const user = await getUser(token);
 
       if(user){
-        const create = await referralCreate(user, companyId, campaignId, affiliateId, emailAddress, stripeAccountId, paymentIntentId);
+        const create = await referralCreate(user, companyId, campaignId, affiliateId, emailAddress, orderId);
 
         if(create !== "error"){
           return res.status(200).json({ response: create });

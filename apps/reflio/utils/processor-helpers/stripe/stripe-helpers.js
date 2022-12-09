@@ -1,9 +1,9 @@
-import { supabaseAdmin } from './supabase-admin';
-import { stripe } from './stripe';
-import { invoicePayment, chargePayment } from './stripe-payment-helpers';
-import { monthsBetweenDates } from './helpers';
+import { supabaseAdmin } from '@/utils/supabase-admin';
+import { stripe } from '@/utils/stripe';
+import { invoicePayment, chargePayment } from '@/utils/processor-helpers/stripe/stripe-payment-helpers';
+import { monthsBetweenDates } from '@/utils/helpers';
 
-export const createCommission = async(data, stripeId, manualReferralId) => {
+export const createStripeCommission = async(data, stripeId, manualReferralId) => {
   let paymentData = data?.data?.object ? data?.data?.object : data?.id ? data : null;
   let referralId = null;
 

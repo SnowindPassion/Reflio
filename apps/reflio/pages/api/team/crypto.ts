@@ -5,7 +5,7 @@ export default async function cryptoCall(req: NextApiRequest, res: NextApiRespon
 
   try {    
     if (req.method === "POST") {
-      const { cryptoType, cryptoArray } = req.body as { cryptoType: string, cryptoArray: string[] };
+      const { cryptoType, cryptoArray } = req.body as { cryptoType: string, cryptoArray: any[] };
 
       if(cryptoArray === null || cryptoArray.length === 0){
         return res.status(400).json({ 'message': 'Crypto array not found' });

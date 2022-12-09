@@ -277,7 +277,7 @@ export const CampaignForm = ({ edit, setupMode }) => {
               <div className="sm:col-span-12">
                 <div>
                   <p className="text-xl font-bold mb-1">Give new customers a discount (optional)</p>
-                  <p className="text-md mb-5">Enter the details of a discount code that was created in your Stripe account. Adding a discount code <span className="font-semibold">greatly increases conversion rates</span> for both referral sales, and EU based users giving cookie consent.</p>
+                  <p className="text-md mb-5">Enter the details of a discount code that has already been created in your payment processor (e.g. Stripe, Paddle). Adding a discount code <span className="font-semibold">greatly increases conversion rates</span> for both referral sales, and EU based users giving cookie consent.</p>
                   <div>
                     <div className="space-y-4">
                       <div className="mt-1 flex rounded-md shadow-sm items-center justify-between">

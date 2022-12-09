@@ -97,10 +97,10 @@ export default function StripeSetupPage() {
                   : activeCompany?.payment_integration_type === 'paddle' &&
                     <>
                       <p className="text-lg mb-3">Your Paddle account is connected to Reflio.</p>
-                      <div className="mb-3">
+                      {/* <div className="mb-3">
                         <p className="text-lg font-semibold">Paddle Vendor ID:</p>
                         <p>{activeCompany?.payment_integration_field_three}</p>
-                      </div>
+                      </div> */}
                       <div className="mb-8 pb-8 border-b-4">
                         <p className="text-lg font-semibold mb-1">Your unique Paddle webhook URL:</p>
                         <CopyToClipboard text={`https://reflio.com/api/payments/paddle/${activeCompany?.company_id}/webhooks`} onCopy={() => toast.success('URL copied to clipboard')}>
@@ -156,7 +156,7 @@ export default function StripeSetupPage() {
                                 <label htmlFor="payment_integration_field_one" className="block font-semibold">
                                   Paddle Public Key
                                 </label>
-                                <p className="mb-2">Your Public Key can be retrieved <a className="underline font-bold" href="https://vendors.paddle.com/public-key" target="_blank">here.</a> Make sure to copy the entire key, including the beginning and end sections.</p>
+                                <p className="mb-2">Your Public Key can be retrieved <a className="underline font-bold" href="https://vendors.paddle.com/public-key" target="_blank" rel="noreferrer">here.</a> Make sure to copy the entire key, including the beginning and end sections.</p>
                                 <div>
                                   <textarea
                                     required
@@ -174,7 +174,7 @@ export default function StripeSetupPage() {
                                 <label htmlFor="payment_integration_field_two" className="block font-semibold">
                                   Paddle API Key
                                 </label>
-                                <p className="mb-2">Your API Key can be retrieved <a className="underline font-bold" href="https://vendors.paddle.com/authentication" target="_blank">here.</a> You may need to create a new key if one hasn't already been created.</p>
+                                <p className="mb-2">Your API Key can be retrieved <a className="underline font-bold" href="https://vendors.paddle.com/authentication" target="_blank" rel="noreferrer">here.</a> You may need to create a new key if one hasn&apos;t already been created.</p>
                                 <div>
                                   <input
                                     minLength="2"
@@ -191,7 +191,7 @@ export default function StripeSetupPage() {
                                 <label htmlFor="payment_integration_field_three" className="block font-semibold">
                                   Paddle Vendor ID
                                 </label>
-                                <p className="mb-2">Your Vendor ID can be retrieved <a className="underline font-bold" href="https://vendors.paddle.com/authentication" target="_blank">here</a>, in the section where it says <strong>"Your Paddle Vendor ID"</strong></p>
+                                <p className="mb-2">Your Vendor ID can be retrieved <a className="underline font-bold" href="https://vendors.paddle.com/authentication" target="_blank" rel="noreferrer">here</a>, in the section where it says <strong>&ldquo;Your Paddle Vendor ID&ldquo;</strong></p>
                                 <div>
                                   <input
                                     minLength="2"
@@ -210,17 +210,16 @@ export default function StripeSetupPage() {
                             <h3 className="text-xl font-semibold mb-2">Step 2. Setup webhooks in Paddle:</h3>
                             <p className="text-base mb-2">In order for Reflio to work and correctly attribute potential referrals, you need to have webhooks set up.</p>
                             <div className="mb-4">
-                              <p className="mb-2">In Paddle, go to <a target="_blank" className="font-bold underline" href="https://vendors.paddle.com/alerts-webhooks">Developer tools &gt; Alerts / Webhooks</a> and make sure the the following events have "Webhook" turned on:</p>
+                              <p className="mb-2">In Paddle, go to <a target="_blank" rel="noreferrer" className="font-bold underline" href="https://vendors.paddle.com/alerts-webhooks">Developer tools &gt; Alerts / Webhooks</a> and make sure the the following events have &ldquo;Webhook&ldquo; turned on:</p>
                               <ul className="list-disc pl-4">
-                                <li>Subscription Created</li>
-                                <li>Subscription Updated</li>
-                                <li>Subscription Cancelled</li>
                                 <li>Subscription Payment Success</li>
                                 <li>Subscription Payment Refunded</li>
+                                <li>Payment Success</li>
+                                <li>Payment Refunded</li>
                               </ul>
                             </div>
                             <div className="pb-6 border-b-4">
-                              <p className="mb-2"><strong>IMPORTANT:</strong> In Paddle, in the <strong>"URLs for receiving webhooks"</strong> section, add the below URL as a new endpoint. This is your unique Paddle webhook URL.</p>
+                              <p className="mb-2"><strong>IMPORTANT:</strong> In Paddle, in the <strong>&ldquo;URLs for receiving webhooks&ldquo;</strong> section, add the below URL as a new endpoint. This is your unique Paddle webhook URL.</p>
                               <CopyToClipboard text={`https://reflio.com/api/payments/paddle/${activeCompany?.company_id}/webhooks`} onCopy={() => toast.success('URL copied to clipboard')}>
                                 <input 
                                   type="text"

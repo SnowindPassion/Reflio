@@ -49,7 +49,7 @@ export default function ReferralCreatePage() {
           affiliateId: data?.affiliate_id,
           emailAddress: data?.email_address,
           stripeAccountId: activeCompany?.stripe_id,
-          paymentIntentId: data?.payment_intent_id ? data?.payment_intent_id : null,
+          orderId: data?.order_id ? data?.order_id : null,
         },
         token: session.access_token
       });
@@ -149,21 +149,36 @@ export default function ReferralCreatePage() {
                         />
                       </div>
                     </div>
-                    <div>
-                      <label htmlFor="payment_intent_id" className="text-xl font-semibold text-gray-900 mb-1 block">
-                        Stripe Payment ID (*optional*)
-                      </label>
-                      <p className="mb-3">The ID of the Stripe payment intent or invoice. If the payment is found, this will automatically create a commission for the affiliate.</p>
-                      <div className="mt-1 flex rounded-md shadow-sm">
-                        <input
-                          placeholder="Stripe Payment ID (e.g. pi_2FaPXJC7NSaZYFlG02P1MRVx)"
-                          name="payment_intent_id"
-                          id="payment_intent_id"
-                          type="text"
-                          className="flex-1 block w-full min-w-0 p-3 rounded-xl focus:outline-none sm:text-md border-2 border-gray-300"
-                        />
+                    {
+                      activeCompany?.payment_integration_type !== null && activeCompany?.payment_integration_type !== "manual" &&
+                      <div>
+                        {
+                          activeCompany?.payment_integration_type === "stripe" ?
+                            <>
+                              <label htmlFor="order_id" className="text-xl font-semibold text-gray-900 mb-1 block">
+                                Stripe Payment ID (*optional*)
+                              </label>
+                              <p className="mb-3">The ID of the Stripe payment intent or invoice. If the payment is found, this will automatically create a commission for the affiliate.</p>
+                            </>
+                          :
+                            <>
+                              <label htmlFor="order_id" className="text-xl font-semibold text-gray-900 mb-1 block">
+                                Paddle Order ID (*optional*)
+                              </label>
+                              <p className="mb-3">The ID of the Paddle order. If the order is found, this will automatically create a commission for the affiliate.</p>
+                            </>
+                        }
+                        <div className="mt-1 flex rounded-md shadow-sm">
+                          <input
+                            placeholder={activeCompany?.payment_integration_type === "stripe" ? 'Stripe Payment ID (e.g. pi_2FaPXJC7NSaZYFlG02P1MRVx' : activeCompany?.payment_integration_type === "paddle" ? 'Paddle Order ID (e.g. 1022907-384786)' : null}
+                            name="order_id"
+                            id="order_id"
+                            type="text"
+                            className="flex-1 block w-full min-w-0 p-3 rounded-xl focus:outline-none sm:text-md border-2 border-gray-300"
+                          />
+                        </div>
                       </div>
-                    </div>
+                    }
                     {
                       errorMessage &&
                       <div className="bg-red-500 text-center p-4 mt-8 rounded-lg">

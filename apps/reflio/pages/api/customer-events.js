@@ -2,9 +2,9 @@ import { stripe } from '@/utils/stripe';
 import {
   deleteIntegrationFromDB,
   editCommission,
-  createCommission,
+  createStripeCommission,
   updateCustomer
-} from 'utils/stripe-helpers';
+} from '@/utils/processor-helpers/stripe/stripe-helpers';
 import { withSentry } from '@sentry/nextjs';
 
 // Stripe requires the raw body to construct the event.
@@ -62,7 +62,7 @@ const customerEvents = async (req, res) => {
             await editCommission(event);
             break;
           case 'charge.succeeded':
-            await createCommission(event, null, null);
+            await createStripeCommission(event, null, null);
             break;
           case 'customer.created':
             await updateCustomer(event);
