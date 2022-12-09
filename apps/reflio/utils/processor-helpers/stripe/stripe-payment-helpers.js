@@ -1,6 +1,6 @@
-import { supabaseAdmin } from './supabase-admin';
-import { stripe } from './stripe';
-import { LogSnagPost } from './helpers';
+import { supabaseAdmin } from '@/utils/supabase-admin';
+import { stripe } from '@/utils/stripe';
+import { LogSnagPost } from '@/utils/helpers';
 
 export const invoicePayment = async(referralData, stripeId, referralId, paymentIntent, invoiceId) => {  
   const invoice = await stripe.invoices.retrieve(

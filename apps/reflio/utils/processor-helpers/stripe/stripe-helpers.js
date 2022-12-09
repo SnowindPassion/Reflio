@@ -1,9 +1,9 @@
-import { supabaseAdmin } from './supabase-admin';
-import { stripe } from './stripe';
-import { invoicePayment, chargePayment } from './stripe-payment-helpers';
-import { monthsBetweenDates } from './helpers';
+import { supabaseAdmin } from '@/utils/supabase-admin';
+import { stripe } from '@/utils/stripe';
+import { invoicePayment, chargePayment } from '@/utils/processor-helpers/stripe/stripe-payment-helpers';
+import { monthsBetweenDates } from '@/utils/helpers';
 
-export const createCommission = async(data, stripeId, manualReferralId) => {
+export const createStripeCommission = async(data, stripeId, manualReferralId) => {
   let paymentData = data?.data?.object ? data?.data?.object : data?.id ? data : null;
   let referralId = null;
 
@@ -235,9 +235,13 @@ export const deleteIntegrationFromDB = async (stripeId) => {
   const { error } = await supabaseAdmin
   .from('companies')
   .update({
-    stripe_id: null
+    payment_integration_type: null,
+    payment_integration_field_one: null,
+    payment_integration_field_two: null,
+    payment_integration_field_three: null,
+    payment_integration_data: null
   })
-  .eq({ stripe_id: stripeId })
+  .eq({ payment_integration_field_one: stripeId })
   if (error) return "error";
 };
 

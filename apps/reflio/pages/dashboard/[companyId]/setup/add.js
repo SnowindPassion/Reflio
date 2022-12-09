@@ -4,9 +4,11 @@ import { CopyBlock, monokaiSublime } from "react-code-blocks";
 import Button from '@/components/Button'; 
 import Card from '@/components/Card'; 
 import { SEOMeta } from '@/templates/SEOMeta'; 
+import { useCompany } from '@/utils/CompanyContext';
 
 export default function TrackingSetupPage() {
   const router = useRouter();
+  const { activeCompany } = useCompany();
 
   const embedCode = 
   `<script async src='https://reflio.com/js/reflio.min.js' data-reflio='${router?.query?.companyId}'></script>`;
@@ -30,7 +32,7 @@ export default function TrackingSetupPage() {
         </div>
       </div>
       <div className="wrapper">
-        <div className="grid grid-cols-1 space-y-3 md:grid-cols-12 md:space-y-0 md:space-x-4">
+        <div>
           <Card className="lg:col-span-6 xl:col-span-8 max-w-4xl">
             <h2 className="text-3xl font-semibold mb-5">Manual setup</h2>
             <div className="mb-5">
@@ -60,31 +62,20 @@ export default function TrackingSetupPage() {
                 /> 
               </div>
             </div>
-            <div>
-              <p className="text-lg mb-8">Reflio will automatically add the referral ID to an existing Stripe customer with the same email address, or later if the Stripe customer is created at a different time. When the user converts to a paying customer, Reflio will automatically create a commission if there was an eligible referral ID associated with that user.</p>
+            <div className="mt-5">
+              {
+                activeCompany?.payment_integration_type === 'stripe' && 
+                <p className="text-lg">Reflio will automatically add the referral ID to an existing Stripe customer with the same email address, or later if the Stripe customer is created at a different time. When the user converts to a paying customer, Reflio will automatically create a commission if there was an eligible referral ID associated with that user.</p>
+              }
               <Button
                 large
                 primary
                 href={`/dashboard/${router?.query?.companyId}/setup/verify`}
+                className="mt-4"
               >
                 <span>Verify installation</span>
               </Button>
             </div>
-          </Card>
-          <Card 
-            className="lg:col-span-6 xl:col-span-4"
-            secondary
-          >
-            <span className="text-sm font-semibold uppercase py-1 px-3 bg-white rounded-xl mb-2 inline-block">Free whilst in Beta</span>
-            <h2 className="text-3xl font-semibold mb-4 flex items-center text-white">Concierge setup</h2>
-            <p className="text-lg mb-5 text-white">We offer a free concierge setup option where we will manually help you add Reflio to your codebase. Please contact us via the button below to get started.</p>
-            <Button
-              onClick={e=>{$crisp.push(['do', 'chat:open']), $crisp.push(["set", "message:text", ["Hello, I'd like to get help setting up Reflio on my website."]]);}}
-              large
-              primary
-            >
-              Live Chat
-            </Button>
           </Card>
         </div>
       </div>

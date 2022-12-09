@@ -1,9 +1,8 @@
 import { supabaseAdmin } from './supabase-admin';
 import { stripe } from './stripe';
 import { toDateTime, LogSnagPost } from './helpers';
-import { createCommission } from '@/utils/stripe-helpers';
-import { PutCommand } from "@aws-sdk/lib-dynamodb";
-import ddbDocClient from "@/utils/analytics/ddbDocClient";
+import { createStripeCommission } from '@/utils/processor-helpers/stripe/stripe-helpers';
+import { createPaddleCommissionFromOrderId } from '@/utils/processor-helpers/paddle/paddle-helpers';
 
 // This entire file should be removed and moved to supabase-admin
 // It's not a react hook, so it shouldn't have useDatabase format
@@ -267,24 +266,6 @@ export const verifyReferral = async (referralCode, companyId) => {
 };
 
 export const fireRecordImpression = async (id) => {
-  // AWS IMPRESSION WIP -----
-  // const params = {
-  //   TableName: "reflio-analytics-v1",
-  //   Item: {
-  //     campaign_id: campaignId,
-  //     affiliate_id: affiliateId,
-  //     date: new Date().toISOString().replace(/T.*/,'').split('-').reverse().join('-'),
-  //     created: ((new Date()).toISOString())
-  //   },
-  // };
-  // try {
-  //   await ddbDocClient.send(new PutCommand(params));
-  //   console.log("Impression fired!!!")
-  //   return "success";
-  // } catch (err) {
-  //   console.log("Error", err.stack);
-  //   return "error";
-  // }
   const { error } = await supabaseAdmin.rpc('referralimpression', { x: 1, affiliateid: id })
 
   if (error) {
@@ -407,30 +388,30 @@ export const referralSignup = async (referralId, cookieDate, email) => {
         referral_reference_email: email,
       })
       .eq('referral_id', referralId);
-    
-    //Get stripe ID from company
+
     let companyData = await supabaseAdmin
       .from('companies')
-      .select('stripe_id')
+      .select('payment_integration_type, payment_integration_field_one')
       .eq('company_id', referralData?.data?.company_id)
       .single();
+      
+    if(companyData?.data?.payment_integration_type === "stripe"){
+      if(companyData?.data?.payment_integration_field_one){  
+        const customer = await stripe.customers.list({
+          email: email,
+          limit: 1,
+        }, {
+          stripeAccount: companyData?.data?.payment_integration_field_one
+        });
 
-    if(companyData?.data?.stripe_id && companyData?.data?.stripe_id !== 'manual'){  
-      const customer = await stripe.customers.list({
-        email: email,
-        limit: 1,
-      }, {
-        stripeAccount: companyData?.data?.stripe_id
-      });
-
-      if(customer?.data?.length){
-        await stripe.customers.update(
-          customer?.data[0]?.id,
-          {metadata: {reflio_referral_id: referralData?.data?.referral_id}},
-          {stripeAccount: companyData?.data?.stripe_id}
-        );
+        if(customer?.data?.length){
+          await stripe.customers.update(
+            customer?.data[0]?.id,
+            {metadata: {reflio_referral_id: referralData?.data?.referral_id}},
+            {stripeAccount: companyData?.data?.payment_integration_field_one}
+          );
+        }
       }
-
     }
 
     return referralData?.data;
@@ -462,27 +443,30 @@ export const manualReferralSignup = async (identifier, referralId) => {
     //Get stripe ID from company
     let companyData = await supabaseAdmin
       .from('companies')
-      .select('stripe_id')
+      .select('payment_integration_type, payment_integration_field_one')
       .eq('company_id', referralData?.data?.company_id)
       .single();
-
-    if(companyData?.data?.stripe_id && companyData?.data?.stripe_id !== 'manual' && identifier?.includes('@')){  
-      const customer = await stripe.customers.list({
-        email: identifier,
-        limit: 1,
-      }, {
-        stripeAccount: companyData?.data?.stripe_id
-      });
-
-      if(customer?.data?.length){
-        await stripe.customers.update(
-          customer?.data[0]?.id,
-          {metadata: {reflio_referral_id: referralData?.data?.referral_id}},
-          {stripeAccount: companyData?.data?.stripe_id}
-        );
+      
+    if(companyData?.data?.payment_integration_type === "stripe"){
+      if(companyData?.data?.payment_integration_field_one && identifier?.includes('@')){  
+        const customer = await stripe.customers.list({
+          email: identifier,
+          limit: 1,
+        }, {
+          stripeAccount: companyData?.data?.payment_integration_field_one
+        });
+  
+        if(customer?.data?.length){
+          await stripe.customers.update(
+            customer?.data[0]?.id,
+            {metadata: {reflio_referral_id: referralData?.data?.referral_id}},
+            {stripeAccount: companyData?.data?.payment_integration_field_one}
+          );
+        }
+  
       }
-
     }
+
 
     return referralData?.data;
   }
@@ -518,7 +502,7 @@ export const getReferralFromId = async (referralId, companyId) => {
   return "error";
 }
 
-export const referralCreate = async (user, companyId, campaignId, affiliateId, emailAddress, stripeAccountId, paymentIntentId) => {
+export const referralCreate = async (user, companyId, campaignId, affiliateId, emailAddress, orderId) => {
   if(!user || !companyId || !campaignId || !emailAddress) return "error";
 
   const details = {
@@ -530,16 +514,30 @@ export const referralCreate = async (user, companyId, campaignId, affiliateId, e
   const referral = await createReferral(details);
   
   if(referral !== "error"){
-    if(stripeAccountId && paymentIntentId){      
-      //Check if paymentIntent exists
-      const paymentIntent = await stripe.paymentIntents.retrieve(
-        paymentIntentId,
-        {stripeAccount: stripeAccountId}
-      );
-
-      if(paymentIntent?.id){
-        const commission = await createCommission(paymentIntent, stripeAccountId, referral?.referral_id);
-
+    if(orderId !== null){      
+      let companyData = await supabaseAdmin
+        .from('companies')
+        .select('payment_integration_type, payment_integration_field_one')
+        .eq('company_id', companyId)
+        .single();
+        
+      if(companyData?.data?.payment_integration_type === "stripe"){
+        //Check if paymentIntent exists
+        const paymentIntent = await stripe.paymentIntents.retrieve(
+          orderId,
+          {stripeAccount: companyData?.data?.payment_integration_field_one}
+        );
+  
+        if(paymentIntent?.id){
+          const commission = await createStripeCommission(paymentIntent, companyData?.data?.payment_integration_field_one, referral?.referral_id);
+  
+          if(commission === "success"){
+            return "commission_success";
+          }
+        }
+      } if(companyData?.data?.payment_integration_type === "paddle"){
+        const commission = await createPaddleCommissionFromOrderId(companyId, orderId, referral?.referral_id);
+  
         if(commission === "success"){
           return "commission_success";
         }

@@ -18,28 +18,28 @@ export default function setupStepCheck(type) {
 
   if(activeCompany){
     if(type === 'light'){
-      if(activeCompany?.stripe_account_data === null || activeCompany?.stripe_id === null){
-        replaceUrl('/setup/stripe');
+      if(activeCompany?.payment_integration_type === null){
+        replaceUrl('/setup/payment-processor');
       }
     
-      if(activeCompany?.stripe_account_data !== null && activeCompany?.stripe_id !== null && activeCompany?.company_currency === null){
+      if(activeCompany?.payment_integration_type !== null && activeCompany?.company_currency === null){
         replaceUrl('/setup/currency');
       }
 
     } else {
-      if(activeCompany?.stripe_account_data === null || activeCompany?.stripe_id === null){
-        replaceUrl('/setup/stripe');
+      if(activeCompany?.payment_integration_type === null){
+        replaceUrl('/setup/payment-processor');
       }
     
-      if(activeCompany?.stripe_account_data !== null && activeCompany?.stripe_id !== null && activeCompany?.company_currency === null){
+      if(activeCompany?.payment_integration_type !== null && activeCompany?.company_currency === null){
         replaceUrl('/setup/currency');
       }
     
-      if(activeCompany?.stripe_account_data !== null && activeCompany?.stripe_id !== null && activeCompany?.company_currency !== null && userCampaignDetails?.length === 0){
+      if(activeCompany?.payment_integration_type !== null && activeCompany?.company_currency !== null && userCampaignDetails?.length === 0){
         replaceUrl('/setup/campaign');
       }
     
-      if(activeCompany?.stripe_account_data !== null && activeCompany?.stripe_id !== null && activeCompany?.company_currency !== null && userCampaignDetails !== null && userCampaignDetails?.length > 0 && activeCompany?.domain_verified !== true){
+      if(activeCompany?.payment_integration_type !== null && activeCompany?.company_currency !== null && userCampaignDetails !== null && userCampaignDetails?.length > 0 && activeCompany?.domain_verified !== true){
         replaceUrl('/setup/add');
       }
   

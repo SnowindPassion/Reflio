@@ -1,12 +1,10 @@
 import { useEffect, useState, createContext, useContext } from 'react';
 import { supabase } from './supabase-client';
-import { slugifyString, LogSnagPost } from './helpers';
-import { useRouter } from 'next/router';
+import { slugifyString, LogSnagPost, postData } from '@/utils/helpers';
 
 export const UserContext = createContext();
 
 export const UserContextProvider = (props) => {
-  const router = useRouter();
   const [userLoaded, setUserLoaded] = useState(false);
   const [session, setSession] = useState(null);
   const [user, setUser] = useState(null);
@@ -66,10 +64,6 @@ export const UserContextProvider = (props) => {
       );
     }
   }, [user]);
-
-  // if(user && session && team === null && router?.pathname !== '/dashboard/create-team'){
-  //   router.replace('/dashboard/create-team');
-  // }
 
   const value = {
     session,
@@ -392,12 +386,11 @@ export const newCompany = async (user, form) => {
   }
 };
 
-export const continueWithoutStripe = async (companyId) => {
+export const continueWithoutProcessor = async (companyId) => {
   let { error } = await supabase
     .from('companies')
     .update({
-      stripe_id: 'manual',
-      stripe_account_data: 'manual'
+      payment_integration_type: 'manual'
     })
     .eq('company_id', companyId);
 
@@ -594,7 +587,7 @@ export const editCampaignMeta = async (campaignId, metaData) => {
 }
 
 //New Stripe Account
-export const newStripeAccount = async (userId, stripeId, companyId) => {
+export const newStripeAccount = async (stripeId, companyId) => {
   const getAccountDetails = await fetch('/api/get-account-details', {
     method: 'POST',
     headers: { "Content-Type": "application/json" },
@@ -611,8 +604,9 @@ export const newStripeAccount = async (userId, stripeId, companyId) => {
   const { error } = await supabase
     .from('companies')
     .update({
-      stripe_account_data: getAccountDetails?.data,
-      stripe_id: stripeId
+      payment_integration_type: 'stripe',
+      payment_integration_field_one: stripeId,
+      payment_integration_data: getAccountDetails?.data
     }).eq('company_id', companyId);
 
   if (error) {
@@ -625,6 +619,48 @@ export const newStripeAccount = async (userId, stripeId, companyId) => {
   }
 
 };
+
+export const addPaymentIntegration = async(session, companyId, paymentType, formData) => {
+  if(!paymentType || !formData) return "error";
+
+  if(paymentType === 'paddle'){
+    const verifyCall = await postData({
+      url: `/api/payments/paddle/${companyId}/verify`,
+      data: { 
+        vendorId: formData?.payment_integration_field_three,
+        apiKey: formData?.payment_integration_field_two,
+      },
+      token: session.access_token
+    });
+    
+    const cryptoCall = await postData({
+      url: `/api/team/crypto`,
+      data: { 
+        cryptoType: "encrypt",
+        cryptoArray: [formData?.payment_integration_field_one, formData?.payment_integration_field_two, formData?.payment_integration_field_three]
+      },
+      token: session.access_token
+    });
+
+    if(verifyCall?.message === "success" && cryptoCall?.message === "success" && cryptoCall?.data?.length){
+      const { error } = await supabase
+        .from('companies')
+        .update({
+          payment_integration_type: paymentType,
+          payment_integration_field_one: cryptoCall?.data[0],
+          payment_integration_field_two: cryptoCall?.data[1],
+          payment_integration_field_three: cryptoCall?.data[2],
+        }).eq('company_id', companyId);
+
+      if (!error) {
+        return "success";
+      }
+    }
+  }
+
+  return "error";
+  
+}
 
 export const manuallyVerifyDomain = async (companyId) => {
   let { error } = await supabase

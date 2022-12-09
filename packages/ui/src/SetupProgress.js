@@ -11,20 +11,20 @@ export const SetupProgress = (props) => {
   const { activeCompany } = useCompany();
   const { userCampaignDetails } = useCampaign();
   const companyId = router?.query?.companyId ? router?.query?.companyId : null;
-  let editCompany, connectStripe, chooseCurrency, createCampaign, companyVerified = null;
+  let editCompany, connectPaymentProcessor, chooseCurrency, createCampaign, companyVerified = null;
 
   if(activeCompany){
     editCompany = 'complete';
 
-    if(activeCompany?.stripe_account_data !== null && activeCompany?.stripe_id !== null){
-      connectStripe = 'complete';
+    if(activeCompany?.payment_integration_type !== null){
+      connectPaymentProcessor = 'complete';
     }
   
-    if(activeCompany?.stripe_account_data !== null && activeCompany?.stripe_id !== null && activeCompany?.company_currency !== null){
+    if(activeCompany?.payment_integration_type !== null && activeCompany?.company_currency !== null){
       chooseCurrency = 'complete';
     }
   
-    if(activeCompany?.stripe_account_data !== null && activeCompany?.stripe_id !== null && activeCompany?.company_currency !== null && userCampaignDetails?.length > 0){
+    if(activeCompany?.payment_integration_type !== null && activeCompany?.company_currency !== null && userCampaignDetails?.length > 0){
       createCampaign = 'complete';
     }
 
@@ -35,7 +35,7 @@ export const SetupProgress = (props) => {
   
   let steps = [
     { name: !activeCompany ? 'Add Company' : 'Edit company', href: !activeCompany ? '/dashboard/add-company' : `/dashboard/${activeCompany?.company_id}/settings`, status: editCompany},
-    { name: 'Connect Stripe', href: !companyId ? '/dashboard' : `/dashboard/${companyId}/setup/stripe`, status: connectStripe },
+    { name: 'Connect payment processor', href: !companyId ? '/dashboard' : `/dashboard/${companyId}/setup/payment-processor`, status: connectPaymentProcessor },
     { name: 'Choose a currency', href: !companyId ? '/dashboard' : `/dashboard/${companyId}/setup/currency`, status: chooseCurrency },
     { name: 'Create a campaign', href: !companyId ? '/dashboard' : `/dashboard/${companyId}/setup/campaign`, status: createCampaign },
     { name: 'Setup Reflio', href: !companyId ? '/dashboard' : `/dashboard/${companyId}/setup/add`, status: companyVerified },

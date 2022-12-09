@@ -15,7 +15,6 @@ export default function Layout({ children }) {
   const AdminMobileNav = dynamic(() => import('@/components/AdminNavbar/AdminMobileNav'));
   const AdminDesktopNav = dynamic(() => import('@/components/AdminNavbar/AdminDesktopNav'));
   const SimpleNav = dynamic(() => import('@/components/SimpleNav'));
-  const StripeDisconnectNotice = dynamic(() => import('@/components/StripeDisconnectNotice'));
   const router = useRouter();
   let defaultPage = true;
   let dashboardPage = false;
@@ -104,7 +103,6 @@ export default function Layout({ children }) {
             <div className="h-screen flex overflow-hidden">
               <AdminDesktopNav/>
               <div className="flex-1 overflow-auto focus:outline-none">
-                <StripeDisconnectNotice/>
                 <AdminMobileNav/>
                 <main className="flex-1 relative pb-8 z-0 overflow-y-auto">
                   <>

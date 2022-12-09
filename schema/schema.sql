@@ -120,6 +120,11 @@ create table companies (
   stripe_account_data jsonb,
   domain_verified boolean default false,
   stripe_id text,
+  payment_integration_type text,
+  payment_integration_field_one text,
+  payment_integration_field_two text,
+  payment_integration_field_three text,
+  payment_integration_data jsonb,
   active_company boolean default false,
   created timestamp with time zone default timezone('utc'::text, now()) not null
 );
@@ -233,6 +238,9 @@ create table commissions (
   commission_refund_value integer default null,
   paid_at text default null,
   reflio_commission_paid boolean default false,
+  custom_field_one text default null,
+  custom_field_two text default null,
+  custom_field_three text default null,
   commission_total integer default null,
   commission_due_date text default null,
   commission_description text default null,
