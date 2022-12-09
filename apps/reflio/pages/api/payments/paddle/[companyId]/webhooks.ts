@@ -16,16 +16,18 @@ export default async function paddleWebhooksHandler(req: NextApiRequest, res: Ne
       let paddleReferral = null;
       let webhookResult = null;
 
-      if(req.body.passthrough?.includes('referral')){
+      if(req.body.passthrough !== 'undefined' && req.body.passthrough?.includes('referral')){
         try { 
-          paddleReferral = JSON.parse(req.body.passthrough);
+          console.log('Parsed it')
+          paddleReferral = JSON.parse(req.body.passthrough.replace(/`/g, ""));
         } catch (error) {
-          paddleReferral = req.body.passthrough;
+          console.log("Error:")
+          console.log(error)
         }
+      }
 
-        if(paddleReferral.referral){
-          paddleReferral = paddleReferral.referral;
-        }
+      if(paddleReferral?.referral){
+        paddleReferral = paddleReferral?.referral;
       }
 
       if(paddleReferral === null){
@@ -95,10 +97,11 @@ export default async function paddleWebhooksHandler(req: NextApiRequest, res: Ne
         }
       }
   
-      console.log("webhookResult:")
-      console.log(webhookResult)
-      console.log("Success!")
-      return res.status(200).json({ 'message': 'Success' });
+      if(webhookResult === "success"){
+        return res.status(200).json({ 'message': 'Success' });
+      }
+
+      return res.status(400).json({ 'message': 'Webhook did not finish successfully'});
   
     } else {
       return res.status(405).json({ 'message': 'Method not allowed'});
