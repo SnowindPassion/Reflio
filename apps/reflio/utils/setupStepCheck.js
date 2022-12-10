@@ -9,14 +9,12 @@ export default function setupStepCheck(type) {
 
   const replaceUrl = (url) => {
     if(router.asPath === `/dashboard/${router?.query?.companyId}${url}`) return false;
-
-    console.log('ok')
-    console.log(`/dashboard/${router?.query?.companyId}${url}`)
+    if(router.asPath.includes('/dashboard/stripe-verify')) return false;
 
     router.replace(`/dashboard/${router?.query?.companyId}${url}`);
   }
 
-  if(activeCompany){
+  if(activeCompany?.company_id){
     if(type === 'light'){
       if(activeCompany?.payment_integration_type === null){
         replaceUrl('/setup/payment-processor');
