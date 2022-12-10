@@ -87,11 +87,11 @@ export default function StripeSetupPage() {
                       <p className="text-lg mb-3">Your Stripe account is connected to Reflio.</p>
                       <div className="mb-3">
                         <p className="text-xl leading-6 font-semibold text-gray-900">Account name:</p>
-                        <p>{activeCompany?.stripe_account_data?.business_profile?.name}</p>
+                        <p>{activeCompany?.payment_integration_data?.settings?.dashboard?.display_name}</p>
                       </div>
                       <div className="mb-8 pb-8 border-b-4">
                         <p className="text-xl leading-6 font-semibold text-gray-900">Stripe ID:</p>
-                        <p>{activeCompany?.stripe_id}</p>
+                        <p>{activeCompany?.payment_integration_field_one}</p>
                       </div>
                     </>
                   : activeCompany?.payment_integration_type === 'paddle' &&
