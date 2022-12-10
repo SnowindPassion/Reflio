@@ -13,7 +13,8 @@ export default function Onboarding() {
   const [runningStripeFunction, setRunningStripeFunction] = useState(false);
   const [error, setError] = useState(null);
 
-  const handleAddStripeAccount = async (stripeId) => {
+  const handleAddStripeAccount = async (stripeId, companyId) => {
+    console.log('running verify func')
     setRunningStripeFunction(true);
 
     try {      
@@ -30,8 +31,14 @@ export default function Onboarding() {
         return data;
       });
 
-      if(activeCompany?.company_id && tokenConfirm?.stripe_id){
-        const addStripeAccount = await newStripeAccount(user?.id, tokenConfirm?.stripe_id, activeCompany?.company_id);
+      console.log('token confirm:')
+      console.log(tokenConfirm)
+
+      if(tokenConfirm?.stripe_id){
+        const addStripeAccount = await newStripeAccount(tokenConfirm?.stripe_id, companyId);
+
+        console.log("addStripeAccount:")
+        console.log(addStripeAccount)
 
         if(addStripeAccount === "success"){
           router.replace(`/dashboard/${activeCompany?.company_id}/setup/currency`);
@@ -48,7 +55,7 @@ export default function Onboarding() {
   };
 
   if(router?.query?.code && runningStripeFunction === false && user?.id && activeCompany?.company_id){
-    handleAddStripeAccount(router?.query?.code);
+    handleAddStripeAccount(router?.query?.code, activeCompany?.company_id);
   }
 
   return(

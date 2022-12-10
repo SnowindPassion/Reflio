@@ -601,15 +601,20 @@ export const newStripeAccount = async (stripeId, companyId) => {
     return data;
   });
 
+  console.log('getAccountDetails:')
+  console.log(getAccountDetails)
+
   const { error } = await supabase
     .from('companies')
     .update({
       payment_integration_type: 'stripe',
       payment_integration_field_one: stripeId,
-      payment_integration_data: getAccountDetails?.data
+      payment_integration_data: getAccountDetails?.data ?? null
     }).eq('company_id', companyId);
 
   if (error) {
+    console.log("Error:")
+    console.log(error)
     return "error";
   } else {
 
