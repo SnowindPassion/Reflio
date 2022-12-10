@@ -10,7 +10,6 @@ export default function Onboarding() {
   const router = useRouter();
   const { user } = useUser();
   const { activeCompany } = useCompany();
-  const [pageLoaded, setPageLoaded] = useState(false);
   const [runningStripeFunction, setRunningStripeFunction] = useState(false);
   const [error, setError] = useState(null);
 
@@ -31,7 +30,7 @@ export default function Onboarding() {
         return data;
       });
 
-      if(tokenConfirm?.stripe_id){
+      if(activeCompany?.company_id && tokenConfirm?.stripe_id){
         const addStripeAccount = await newStripeAccount(user?.id, tokenConfirm?.stripe_id, activeCompany?.company_id);
 
         if(addStripeAccount === "success"){

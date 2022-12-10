@@ -614,7 +614,6 @@ export const newStripeAccount = async (stripeId, companyId) => {
   } else {
 
     await LogSnagPost('stripe-connected', `New Stripe account connected for company ${companyId}`);
-
     return "success";
   }
 
