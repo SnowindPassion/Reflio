@@ -31,14 +31,8 @@ export default function Onboarding() {
         return data;
       });
 
-      console.log('token confirm:')
-      console.log(tokenConfirm)
-
       if(tokenConfirm?.stripe_id){
         const addStripeAccount = await newStripeAccount(tokenConfirm?.stripe_id, companyId);
-
-        console.log("addStripeAccount:")
-        console.log(addStripeAccount)
 
         if(addStripeAccount === "success"){
           router.replace(`/dashboard/${activeCompany?.company_id}/setup/currency`);

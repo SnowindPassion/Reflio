@@ -19,27 +19,6 @@ export default function BillingPage() {
   const [commissions, setCommissions] = useState([]);
   const [receivedInvoiceUrl, setReceivedInvoiceUrl] = useState(null);
 
-  console.log(usageData)
-
-  const getUsageData = async () => {    
-    try {
-      const { response } = await postData({
-        url: '/api/team/usage',
-        data: { 
-          teamId: team?.team_id,
-        },
-        token: session.access_token
-      });
-
-      if(response !== "error"){
-        setUsageData(response);
-      }
-      
-    } catch (error) {
-      console.log(error)
-    }
-  };
-
   const redirectToCustomerPortal = async () => {
     setLoading(true);
     const { url, error } = await postData({
@@ -126,11 +105,29 @@ export default function BillingPage() {
   }
   
   useEffect(() => {
+    const getUsageData = async () => {    
+      try {
+        const { response } = await postData({
+          url: '/api/team/usage',
+          data: { 
+            teamId: team?.team_id,
+          },
+          token: session.access_token
+        });
+  
+        if(response !== "error"){
+          setUsageData(response);
+        }
+        
+      } catch (error) {
+        console.log(error)
+      }
+    };
     if (user && team?.team_id && usageData === null && loadingUsageData === false) {
       setLoadingUsageData(true);
       getUsageData();
     }
-  });
+  }, [user, team?.team_id, session, usageData, loadingUsageData]);
 
   return (
     <>
