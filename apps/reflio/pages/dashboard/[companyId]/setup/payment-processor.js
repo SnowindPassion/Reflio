@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 import SetupProgress from '@/components/SetupProgress'; 
 import Button from '@/components/Button'; 
-import { useUser, continueWithoutProcessor, addPaymentIntegration } from '@/utils/useUser';
+import { useUser, continueWithoutProcessor, addPaymentIntegration, removePaymentIntegration } from '@/utils/useUser';
 import { StripeConnect } from '@/components/Icons/StripeConnect'; 
 import { useCompany } from '@/utils/CompanyContext';
 import { SEOMeta } from '@/templates/SEOMeta'; 
@@ -15,6 +15,21 @@ export default function StripeSetupPage() {
   const { activeCompany } = useCompany();
   const [loading, setLoading] = useState(false);
   const [altPayment, setAltPayment] = useState(null);
+
+  const removeProcessor = async () => {
+    setLoading(true);
+    
+    await removePaymentIntegration(activeCompany?.company_id).then((result) => {
+      if(result === "error"){
+        toast.error(`There was an error when trying to remove your existing payment method. Please contact support.`);
+        return false;
+      }
+
+      router.reload();
+
+      setLoading(false);
+    });
+  }
   
   const handleSkipProcessor = async () => {
     if (window.confirm('Are you sure you want to continue without adding Stripe? This means that payments will not be automatically be synced with your Stripe dashboard.')){
@@ -68,7 +83,6 @@ export default function StripeSetupPage() {
       <div className="pt-12 mb-6">
         <div className="wrapper">
           <h1 className="text-2xl sm:text-3xl tracking-tight font-extrabold mb-3">Firstly, connect your payment processor</h1>
-          {/* <p className="text-base"><strong>NOTE: Reflio does not store any of your private information.</strong> When you receive a successful payment via your payment processor of choice, the payment processor will send us data about that transaction. With that data, we look to see if there is an associated Reflio referral ID in the transaction metadata. If there is, we then calculate the referral commission value based on the paid transaction value.</p> */}
         </div>
       </div>
       <div className="wrapper">
@@ -79,7 +93,17 @@ export default function StripeSetupPage() {
                 {
                   activeCompany?.payment_integration_type === 'manual' ? 
                     <>
-                      <p className="text-lg mb-3">You are not currently using a payment processor.</p>
+                      <p className="text-lg mb-3"><strong>You are not currently using a payment processor.</strong> Continue the setup process by clicking &quot;Next Step&quot;, or add a new payment integration by clicking &quot;Add a Payment Processor&quot;.</p>
+                      <div>
+                        <Button
+                          onClick={e=>{removeProcessor()}}
+                          className="mb-4"
+                          large
+                          secondary
+                        >
+                          Add a Payment Processor
+                        </Button>
+                      </div>
                     </>
                   : 
                     activeCompany?.payment_integration_type === 'stripe' ? 
@@ -97,10 +121,6 @@ export default function StripeSetupPage() {
                   : activeCompany?.payment_integration_type === 'paddle' &&
                     <>
                       <p className="text-lg mb-3">Your Paddle account is connected to Reflio.</p>
-                      {/* <div className="mb-3">
-                        <p className="text-lg font-semibold">Paddle Vendor ID:</p>
-                        <p>{activeCompany?.payment_integration_field_three}</p>
-                      </div> */}
                       <div className="mb-8 pb-8 border-b-4">
                         <p className="text-lg font-semibold mb-1">Your unique Paddle webhook URL:</p>
                         <CopyToClipboard text={`https://reflio.com/api/payments/paddle/${activeCompany?.company_id}/webhooks`} onCopy={() => toast.success('URL copied to clipboard')}>
@@ -113,6 +133,20 @@ export default function StripeSetupPage() {
                       </div>
                     </>
                 }
+                {
+                  activeCompany?.payment_integration_type !== 'manual' &&
+                  <div>
+                    <Button
+                      onClick={e=>{removeProcessor()}}
+                      className="mb-4"
+                      small
+                      red
+                    >
+                      Disconnect Payment Processor
+                    </Button>
+                  </div>
+                }
+                <div>
                   <Button
                     large
                     primary
@@ -120,6 +154,7 @@ export default function StripeSetupPage() {
                   >
                     <span>Next Step</span>
                   </Button>
+                </div>
               </div>
             :
               <div>
@@ -150,7 +185,6 @@ export default function StripeSetupPage() {
                         <>
                           <div className="mb-8">
                             <h3 className="text-xl font-semibold mb-2">Step 1. Enter your Paddle credentials:</h3>
-                            {/* <p className="text-base">Your credentials are encrypted end-to-end.</p> */}
                             <div className="mt-4 space-y-4">
                               <div>
                                 <label htmlFor="payment_integration_field_one" className="block font-semibold">

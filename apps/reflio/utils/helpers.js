@@ -177,6 +177,8 @@ export const LogSnagPost = async (type, message) => {
         emojiType = "🎉";
       } else if(type === "commission-created"){
         emojiType = "💵";
+      } else if(type === "paddle-connected"){
+        emojiType = "🏓";
       }
     
       let raw = JSON.stringify({

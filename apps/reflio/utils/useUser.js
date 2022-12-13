@@ -601,9 +601,6 @@ export const newStripeAccount = async (stripeId, companyId) => {
     return data;
   });
 
-  console.log('getAccountDetails:')
-  console.log(getAccountDetails)
-
   const { error } = await supabase
     .from('companies')
     .update({
@@ -622,6 +619,23 @@ export const newStripeAccount = async (stripeId, companyId) => {
     return "success";
   }
 
+};
+
+//Deletes stripe ID from company account
+export const removePaymentIntegration = async (companyId) => {
+  const { error } = await supabase
+  .from('companies')
+  .update({
+    payment_integration_type: null,
+    payment_integration_field_one: null,
+    payment_integration_field_two: null,
+    payment_integration_field_three: null,
+    payment_integration_data: null
+  })
+  .eq('company_id', companyId)
+  if (error) return "error";
+
+  return "success";
 };
 
 export const addPaymentIntegration = async(session, companyId, paymentType, formData) => {
@@ -657,6 +671,7 @@ export const addPaymentIntegration = async(session, companyId, paymentType, form
         }).eq('company_id', companyId);
 
       if (!error) {
+        await LogSnagPost('paddle-connected', `New Paddle account connected for company ${companyId}`);
         return "success";
       }
     }
