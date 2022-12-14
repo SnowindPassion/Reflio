@@ -175,6 +175,28 @@ export const handleAffiliateInvite = async (user, handleType, affiliateId) => {
 export const handleCampaignJoin = async (user, companyId, campaignId) => {
   if(!user || !companyId || !campaignId) return "error";
 
+  const affiliateData = await supabaseAdmin
+    .from('affiliates')
+    .select('*')
+    .eq('campaign_id', campaignId)
+    .eq('company_id', companyId)
+    .eq('invite_email', user?.email);
+
+  if(affiliateData?.data !== null && affiliateData?.data?.length > 0){
+    const { error } = await supabaseAdmin
+    .from('affiliates')
+    .update({
+      invited_user_id: user?.id,
+      accepted: true,
+      invite_email: user?.email
+    })
+    .match({ affiliate_id: affiliateData?.data[0]?.affiliate_id })
+    
+    if(!error){
+      return "success";
+    }
+  }
+
   let { data } = await supabaseAdmin
     .from('campaigns')
     .select('team_id, campaign_public')
@@ -199,8 +221,7 @@ export const handleCampaignJoin = async (user, companyId, campaignId) => {
     }
   } else {
     return "private";
-  }
-    
+  } 
 };
 
 //Get public campaigns

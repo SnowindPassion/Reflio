@@ -7,7 +7,7 @@ import { useUser } from '@/utils/useUser';
 import { Button } from '@/components/Button';
 import LoadingDots from '@/components/LoadingDots';
 
-export const AuthForm = ({ type, campaignId, campaignHandle, affiliate, hideDetails, editor }) => {
+export const AuthForm = ({ type, campaignId, companyId, campaignHandle, affiliate, hideDetails, editor }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState(''); 
   const [showPasswordInput, setShowPasswordInput] = useState(false);
@@ -63,7 +63,7 @@ export const AuthForm = ({ type, campaignId, campaignHandle, affiliate, hideDeta
 
       if(campaignId){
         if (typeof window !== "undefined") {
-          localStorage.setItem("join_campaign_details", JSON.stringify({"campaign_id": campaignId, "campaign_handle": campaignHandle}));
+          localStorage.setItem("join_campaign_details", JSON.stringify({"campaign_id": campaignId, "company_id": companyId, "campaign_handle": campaignHandle}));
         }
       }
     }

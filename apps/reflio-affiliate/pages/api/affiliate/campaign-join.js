@@ -8,7 +8,7 @@ const campaignJoin = async (req, res) => {
 
     try {
       const user = await getUser(token);
-
+      
       if(user){
         const status = await handleCampaignJoin(user, companyId, campaignId);
 

@@ -1,18 +1,20 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { useUser } from '@/utils/useUser';
+import { postData } from '@/utils/helpers';
 
 function Layout({ children }) {
-  const { user, userFinderLoaded } = useUser();
+  const { user, session, userFinderLoaded } = useUser();
   const Toaster = dynamic(() =>
     import("react-hot-toast").then((module) => module.Toaster)
   );
   const AdminMobileNav = dynamic(() => import('@/templates/AdminNavbar/AdminMobileNav'));
   const AdminDesktopNav = dynamic(() => import('@/templates/AdminNavbar/AdminDesktopNav'));
   const router = useRouter();
+  const [inviteLoading, setInviteLoading] = useState(false);
 
   let defaultPage = true;
   let dashboardPage = false;
@@ -37,17 +39,45 @@ function Layout({ children }) {
   }
 
   if(dashboardPage === true){
-    useEffect(() => {
-      if(userFinderLoaded){
-        if (!user) router.replace('/signin');
-      }
-    }, [userFinderLoaded, user]);
+    if(userFinderLoaded){
+      if (!user) router.replace('/signin');
+    }
   }
+  
+  const joinCampaignFromInvite = async (details) => {    
+    if(!details?.campaign_id){
+      return false;
+    }
+    
+    try {
+      const { status } = await postData({
+        url: '/api/affiliate/campaign-join',
+        data: { 
+          companyId: details?.company_id,
+          campaignId: details?.campaign_id
+        },
+        token: session.access_token
+      });
+      
+      console.log('status:')
+      console.log(status)
 
-  if(!router?.asPath.includes('/invite/')){
+      if(status === "success"){
+        setInviteLoading(false);
+        router.replace(process.env.NEXT_PUBLIC_AFFILIATE_SITE_URL+'?inviteRefresh=true');
+        localStorage.removeItem('join_campaign_details');
+      }
+  
+    } catch (error) {
+      setInviteLoading(false);
+      router.replace(`/invite/${details?.campaign_handle}/${details?.campaign_id}?campaignRedirect=true`);
+    }
+  };
+
+  if(!router?.asPath.includes('/invite/') && !router?.asPath.includes('inviteRefresh=true')){
     if (typeof window !== "undefined") {
       if(localStorage.getItem('join_campaign_details')){
-        if(user){          
+        if(user && session){          
           let details = localStorage.getItem('join_campaign_details');
   
           try {
@@ -56,8 +86,10 @@ function Layout({ children }) {
             console.warn(error);
           }
   
-          if(details){
-            router.replace(`/invite/${details?.campaign_handle}/${details?.campaign_id}?campaignRedirect=true`)
+          if(details && inviteLoading === false){
+            console.log('----RUNNING JOIN CAMPAIGN FROM INVITE----')
+            setInviteLoading(true);
+            joinCampaignFromInvite(details);
           }
         }
       }

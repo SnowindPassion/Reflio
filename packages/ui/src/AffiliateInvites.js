@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useUser } from '@/utils/useUser';
 import { useUserAffiliate } from '@/affiliate-utils/UserAffiliateContext';
 import Button from '@/components/Button'; 
@@ -14,11 +14,14 @@ const AffiliateInvites = (props) => {
   const affiliateInvitePage = router?.query?.handle ? true : false;
   let campaignInviteData = null;
 
-  if(props?.campaignId && userAffiliateInvites !== null && userAffiliateInvites?.length > 0){
-    if(userAffiliateInvites?.filter(invite => invite?.campaign_id === props?.campaignId).length > 0){
-      campaignInviteData = userAffiliateInvites?.filter(invite => invite?.campaign_id === props?.campaignId)[0];
+  useEffect(() => {
+    if(props?.campaignId && userAffiliateInvites !== null && userAffiliateInvites?.length > 0){
+      if(userAffiliateInvites?.filter(invite => invite?.campaign_id === props?.campaignId).length > 0){
+        campaignInviteData = userAffiliateInvites?.filter(invite => invite?.campaign_id === props?.campaignId)[0];
+      }
     }
-  }
+  }, [userAffiliateInvites]);
+
 
   console.log('campaignInviteData:')
   console.log(campaignInviteData)

@@ -110,7 +110,7 @@ export const CampaignInvitePageBlock = ({ publicCampaignData, campaignAlreadyJoi
                         </div>
                       :
                         <div>
-                          <AuthForm editor={editor} affiliate={true} type="signup" campaignId={publicCampaignData?.campaign_id} campaignHandle={router?.query?.handle} hideDetails={true}/>
+                          <AuthForm editor={editor} affiliate={true} type="signup" campaignId={publicCampaignData?.campaign_id} companyId={publicCampaignData?.company_id} campaignHandle={router?.query?.handle} hideDetails={true}/>
                           {/* <Button
                             href={`/signup?campaign_id=${publicCampaignData?.campaign_id}&company_name=${publicCampaignData?.company_name}`}
                             secondary

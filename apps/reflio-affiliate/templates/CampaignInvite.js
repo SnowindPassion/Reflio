@@ -19,7 +19,7 @@ export default function CampaignInvite({ publicCampaignData }) {
     setCampaignAlreadyJoined(true);
   }
 
-  if(router?.asPath.includes('campaignRedirect=true')){
+  if(router?.asPath.includes('campaignRedirect=true') && localStorage.getItem('join_campaign_details')){
     if (typeof window !== "undefined") {
       localStorage.removeItem('join_campaign_details');
     }
