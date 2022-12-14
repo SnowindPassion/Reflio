@@ -3,11 +3,11 @@ import AuthForm from '@/components/AuthForm';
 import LoadingTile from '@/components/LoadingTile';
 import Button from '@/components/Button';  
 import toast from 'react-hot-toast';
+import AffiliateInvites from '@/components/AffiliateInvites'; 
 import { postData } from '@/utils/helpers';
 
 export const CampaignInvitePageBlock = ({ publicCampaignData, campaignAlreadyJoined, loading, setLoading, user, session, editor, editorData }) => {
   const router = useRouter();
-
   let customCampaignData = null;
 
   if(publicCampaignData?.custom_campaign_data !== null){
@@ -39,6 +39,11 @@ export const CampaignInvitePageBlock = ({ publicCampaignData, campaignAlreadyJoi
       if(status === "private"){
         setLoading(false);
         toast.error('This campaign is private. Please contact the campaign owner for an invite.')
+      }
+
+      if(status === "error"){
+        setLoading(false);
+        toast.error('There was an error when joining the campaign. Please try again later, or contact support.')
       }
   
     } catch (error) {
@@ -100,7 +105,7 @@ export const CampaignInvitePageBlock = ({ publicCampaignData, campaignAlreadyJoi
                                 {loading ? 'Joining campaign...' : 'Join campaign'}
                               </Button>
                             :
-                              <p className="text-lg">This campaign is not public, and requires a manual invite for you to join. Please contact <span className="font-bold">{publicCampaignData?.company_name}</span> to request an invite.</p>
+                              <AffiliateInvites campaignId={publicCampaignData?.campaign_id}/>
                           }
                         </div>
                       :
@@ -132,5 +137,4 @@ export const CampaignInvitePageBlock = ({ publicCampaignData, campaignAlreadyJoi
   );
 };
 
-export default CampaignInvitePageBlock;          
-          
+export default CampaignInvitePageBlock;

@@ -20,6 +20,7 @@
       "@/components/*": ["../../packages/ui/src/*"],
       "@/templates/*": ["./templates/*"],
       "@/utils/*": ["utils/*"],
+      "@/affiliate-utils/*": ["utils/*"],
       "@/public/js/*": ["public/js/*"]
     }
   },
