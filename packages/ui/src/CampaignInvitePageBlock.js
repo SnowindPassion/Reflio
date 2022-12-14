@@ -33,7 +33,7 @@ export const CampaignInvitePageBlock = ({ publicCampaignData, campaignAlreadyJoi
       if(status === "success"){
         setLoading(false);
         toast.success(`Congratulations! You have joined campaign ${publicCampaignData?.campaign_name}`)
-        router.replace('/dashboard');
+        router.replace(process.env.NEXT_PUBLIC_AFFILIATE_SITE_URL+'?inviteRefresh=true');
       }
 
       if(status === "private"){
