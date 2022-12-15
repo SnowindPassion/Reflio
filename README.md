@@ -12,6 +12,8 @@
 
 Reflio puts digital privacy first and is proudly open-source. All referrals are processed through European-owned infrastructure, and our company is registered in the UK.
 
+**🚨 NEW: Reflio now supports Paddle as a payment integration 🚨**
+
 <div align="center">
   <img style="width: 100%; height: auto; margin: 0 auto; display: block;" src="https://reflio.com/platform-screenshot.webp" alt="Reflio Dashboard Screenshot"/>
 </div>
