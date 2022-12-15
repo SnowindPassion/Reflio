@@ -19,7 +19,7 @@ Reflio puts digital privacy first and is proudly open-source. All referrals are 
 ## Features / USPs
 
 - Start an affiliate program in minutes
-- Track referrals for Stripe subscriptions or one-time payments
+- Track referrals for Stripe/Paddle subscriptions or one-time payments
 - Automatic payment/refund sync from Stripe
 - Cross sub-domain tracking
 - Automated GDPR & Privacy compliance for users located in the EU
