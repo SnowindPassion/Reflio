@@ -32,7 +32,7 @@ export default async function paddleWebhooksHandler(req: NextApiRequest, res: Ne
 
       if(paddleReferral === null){
         console.log("Referral not found");
-        return res.status(400).json({ 'message': 'Referral not found'});
+        return res.status(200).json({ 'message': 'Referral not found'});
       }
 
       const relevantEvents = new Set([
@@ -49,11 +49,11 @@ export default async function paddleWebhooksHandler(req: NextApiRequest, res: Ne
         .single();
         
       if(companyFromId?.data === null){
-        return res.status(400).json({ 'message': 'Company not found'});
+        return res.status(200).json({ 'message': 'Company not found'});
       }
 
       if(companyFromId?.data?.payment_integration_type !== 'paddle'){
-        return res.status(400).json({ 'message': 'Payment type is not Paddle'});
+        return res.status(200).json({ 'message': 'Payment type is not Paddle'});
       }
       
       const cryptoCall = await postData({
@@ -66,13 +66,13 @@ export default async function paddleWebhooksHandler(req: NextApiRequest, res: Ne
       });
 
       if(cryptoCall?.message !== "success"){
-        return res.status(400).json({ 'message': 'Payment keys could not be decrypted'});
+        return res.status(200).json({ 'message': 'Payment keys could not be decrypted'});
       }
 
       const client = new PaddleSDK(cryptoCall?.data[2], cryptoCall?.data[1], cryptoCall?.data[0]);
       const isVerified = client.verifyWebhookData(req.body);
 
-      if(isVerified === false) return res.status(400).json({ 'message': 'Webhook not verified' });
+      if(isVerified === false) return res.status(200).json({ 'message': 'Webhook not verified' });
 
       if (relevantEvents.has(webhookType)) {
         try {
@@ -101,10 +101,10 @@ export default async function paddleWebhooksHandler(req: NextApiRequest, res: Ne
         return res.status(200).json({ 'message': 'Success' });
       }
 
-      return res.status(400).json({ 'message': 'Webhook did not finish successfully'});
+      return res.status(200).json({ 'message': 'Webhook did not finish successfully'});
   
     } else {
-      return res.status(405).json({ 'message': 'Method not allowed'});
+      return res.status(200).json({ 'message': 'Method not allowed'});
     }
   } catch (error) {
     console.log("Error:")
