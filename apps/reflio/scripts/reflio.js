@@ -425,10 +425,14 @@ class rfl {
     return convertData;
   }
   getReferralId(){
-    if(Reflio.checkCookie().referral_id){
-      return Reflio.checkCookie().referral_id
+    if(Reflio.checkCookie() !== null){
+      if(Reflio.checkCookie().referral_id){
+        return Reflio.checkCookie().referral_id;
+      } else {
+        return null;
+      }
     } else {
-      return null
+      return null;
     }
   }
   async retrieve(referralId, companyId){
