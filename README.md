@@ -29,6 +29,10 @@ Reflio puts digital privacy first and is proudly open-source. All referrals are 
 - Free plan available. Pricing from $0/month (with a 9% commission fee)
 - One central dashboard for your affiliates
 - Get your own customizable affiliate signup page
+
+## Architecture
+
+Reflio is a Turborepo monorepo, and uses React (Next.js) for both the front-end and back-end API routes, TailwindCSS for styling, and Supabase for authentication and postgres database.
   
 ## Contributing / Developer Guide
 
