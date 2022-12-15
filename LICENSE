@@ -1,11 +1,5 @@
-Copyright (c) 2022-present Reflio (McIlroy Limited).
-
-Portions of this software are licensed as follows:
-
-* All content that resides under "apps/reflio/" (https://github.com/Reflio-com/reflio/tree/main/apps/reflio) directory of this repository (Enterprise Edition) is licensed under the license defined in "apps/reflio/LICENSE".
-* All third party components incorporated into the Reflio Software are licensed under the original license provided by the owner of the applicable component.
-* Content outside of the above mentioned directories or restrictions above is available under the "AGPLv3" license as defined below.
-
+Copyright (c) 2021-present Reflio (McIlroy Limited).
+          
                     GNU AFFERO GENERAL PUBLIC LICENSE
                        Version 3, 19 November 2007
 
