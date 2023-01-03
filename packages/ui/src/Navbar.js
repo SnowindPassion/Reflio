@@ -10,7 +10,7 @@ export const Navbar = () => {
 
   const { user } = useUser();
   const [active, setActive] = useState(false);
-  const navClass = 'lg:text-lg font-medium hover:underline mx-4';
+  const navClass = 'lg:text-lg font-medium hover:underline mx-3';
 
   return (
     <>
@@ -20,14 +20,14 @@ export const Navbar = () => {
         </div>
       </div> */}
       <div className="bg-gray-50 sticky top-0 z-50 border-b-2 border-gray-200">
-        <div className="py-4 wrapper">
+        <div className="py-2.5 wrapper">
           <div className="flex justify-between">
             <div className="flex">
-              <div className="flex-shrink-0 flex items-center">
+              <div className="flex-shrink-0 flex items-center mr-4">
                 <Link
                   href="/"
                 >
-                  <Logo className="h-8 lg:h-12 w-auto"/>
+                  <Logo className="h-8 md:h-12 w-auto"/>
                 </Link>
               </div>
             </div>
@@ -75,7 +75,7 @@ export const Navbar = () => {
 
             {
               active &&
-              <div className="origin-top-right absolute left-0 top-auto overflow-hidden mt-12 w-full shadow-xl border-t-4 border-gray-200 bg-white z-50">
+              <div className="origin-top-right absolute left-0 top-auto overflow-hidden mt-10 w-full shadow-xl border-t-4 border-gray-200 bg-white z-50">
                 <a onClick={e=>{setActive(false)}} className="block p-5 text-md bg:text-white hover:bg-gray-100 border-b-2 border-gray-200" href="/#features">Features</a>
                 <a onClick={e=>{setActive(false)}} className="block p-5 text-md bg:text-white hover:bg-gray-100 border-b-2 border-gray-200" href="/pricing">Pricing</a>
                 <a onClick={e=>{setActive(false)}} className="block p-5 text-md bg:text-white hover:bg-gray-100 border-b-2 border-gray-200" href="/resources">Docs & Guides</a>

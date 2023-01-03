@@ -8,19 +8,19 @@ export const PricingParams = () => {
       "affiliates": 50
     },
     "indie": {
-      "companies": 1,
+      "companies": 2,
       "campaigns": 2,
-      "affiliates": 150
+      "affiliates": 500
     },
     "pro": {
-      "companies": 3,
-      "campaigns": 6,
-      "affiliates": 500
+      "companies": 4,
+      "campaigns": 8,
+      "affiliates": 2000
     },
     "team": {
       "companies": 10,
       "campaigns": 30,
-      "affiliates": 2000
+      "affiliates": 5000
     }
   })
 }

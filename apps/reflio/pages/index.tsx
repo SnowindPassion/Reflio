@@ -28,15 +28,15 @@ export default function Index() {
             <div className="max-w-5xl mx-auto">
               <div className="mb-10">
                 <div className="mb-7">
-                  <h1 className="inline text-4xl lg:text-6xl font-semibold md:text-transparent md:bg-clip-text md:bg-gradient-to-r from-secondary to-secondary-2 tracking-tight">
+                  <h1 className="inline text-4xl lg:text-6xl font-semibold md:text-transparent md:bg-clip-text md:bg-gradient-to-r from-secondary to-secondary-2 tracking-tight animate-fadeinfast">
                     Create an affiliate program for your SaaS <span className="inline md:text-transparent md:bg-clip-text md:bg-gradient-to-r md:from-secondary md:to-primary">in minutes, from $0/month.</span>
                   </h1>
                 </div>
-                <p className="text-xl sm:text-2xl font-light">
+                <p className="text-xl sm:text-2xl font-light animate-fadeinslow">
                   Reflio puts <span className="font-medium underline">digital privacy first</span> and is <a href="https://github.com/Reflio-com/reflio" className="font-medium underline">proudly open-source.</a> All referrals are processed through <span className="font-medium underline">European-owned infrastructure</span>, and our company is registered in the UK.
                 </p>
               </div>
-              <div className="mt-10">
+              <div className="mt-10 animate-fadeinslow">
                 <div className="space-y-2 sm:flex sm:items-center sm:justify-center sm:space-x-2 sm:space-y-0">
                   <Button
                     mobileFull
@@ -58,7 +58,7 @@ export default function Index() {
                   </Button>
                 </div>
               </div>
-              <div className="mt-10 text-sm flex flex-col lg:flex-row space-y-3 lg:space-y-0 items-center justify-between max-w-lg mx-auto">
+              <div className="mt-10 text-sm flex flex-col lg:flex-row space-y-3 lg:space-y-0 items-center justify-between max-w-lg mx-auto animate-fadeinslow">
                 <div className="flex items-center font-medium">
                   <CheckCircleIcon className="w-5 lg:w-5 h-auto mr-1"/>
                   <p>Free plan available</p>
@@ -74,7 +74,7 @@ export default function Index() {
               </div>
             </div>
             <div className="hidden md:block mt-16 -mb-40">
-              <div className="max-w-4xl mx-auto">
+              <div className="max-w-5xl mx-auto">
                 <div className="px-0 w-full h-auto bg-white rounded-3xl shadow-2xl mx-auto overflow-hidden">
                   <img src="platform-screenshot.webp" alt="Screenshot of Reflio dashboard" className="mt-0 w-full h-auto" />
                 </div>

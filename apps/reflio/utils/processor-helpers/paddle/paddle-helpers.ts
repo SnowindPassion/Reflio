@@ -1,5 +1,6 @@
 import { supabaseAdmin } from '@/utils/supabase-admin';
 import { monthsBetweenDates, postData } from '@/utils/helpers';
+import { sendEmail } from '@/utils/sendEmail';
 import { LogSnagPost } from '@/utils/helpers';
 
 export const createPaddleCommission = async(referralId: string, data: any, companyId: string, paddleAuth: string[]) => {
@@ -66,10 +67,14 @@ export const createPaddleCommission = async(referralId: string, data: any, compa
         commission_description: commissionVariables?.line_item,
         custom_field_one: paymentData?.checkout_id,
         custom_field_two: paymentType === "payment_succeeded" ? paymentData?.order_id : paymentType === "subscription_payment_succeeded" ? paymentData?.subscription_payment_id : null
-      });
+      }).select();
 
-      if(newCommissionValues?.data){
+      if(newCommissionValues?.data && newCommissionValues?.data[0]?.commission_id){
         console.log('Commission was created!')
+        const commission = newCommissionValues?.data[0];
+        const commissionId = commission?.commission_id;
+        await sendEmail(null, null, null, 'new-commission', companyId, commissionId);
+        await sendEmail(null, null, null, 'new-commission-affiliate', companyId, commissionId);
         await LogSnagPost('commission-created', `New commission registered for campaign ${referralFromId?.data?.campaign_id}`);
         return "success";
       }

@@ -709,9 +709,9 @@ video {
   margin-right: 0.25rem;
 }
 
-.mx-4 {
-  margin-left: 1rem;
-  margin-right: 1rem;
+.mx-3 {
+  margin-left: 0.75rem;
+  margin-right: 0.75rem;
 }
 
 .my-0\.5 {
@@ -797,6 +797,10 @@ video {
   margin-top: 1.5rem;
 }
 
+.mt-10 {
+  margin-top: 2.5rem;
+}
+
 .mr-3 {
   margin-right: 0.75rem;
 }
@@ -831,10 +835,6 @@ video {
 
 .mb-7 {
   margin-bottom: 1.75rem;
-}
-
-.mt-10 {
-  margin-top: 2.5rem;
 }
 
 .mr-1 {
@@ -1202,6 +1202,34 @@ video {
 
 .animate-pulse-fast {
   animation: pulse 0.75s linear infinite;
+}
+
+@keyframes fadein {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+.animate-fadeinfast {
+  animation: fadein 0.75s ease-in-out;
+}
+
+@keyframes fadein {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+.animate-fadeinslow {
+  animation: fadein 1.25s ease-in-out;
 }
 
 @keyframes pulse {
@@ -1863,6 +1891,11 @@ video {
 .py-14 {
   padding-top: 3.5rem;
   padding-bottom: 3.5rem;
+}
+
+.py-2\.5 {
+  padding-top: 0.625rem;
+  padding-bottom: 0.625rem;
 }
 
 .py-24 {
@@ -2981,6 +3014,10 @@ a {
     display: grid;
   }
 
+  .md\:h-12 {
+    height: 3rem;
+  }
+
   .md\:w-12 {
     width: 3rem;
   }
@@ -3189,10 +3226,6 @@ a {
 
   .lg\:hidden {
     display: none;
-  }
-
-  .lg\:h-12 {
-    height: 3rem;
   }
 
   .lg\:w-5 {

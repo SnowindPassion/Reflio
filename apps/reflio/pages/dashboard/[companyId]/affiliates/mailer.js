@@ -12,7 +12,7 @@ import {
 } from '@heroicons/react/outline';
 import setupStepCheck from '@/utils/setupStepCheck';
 
-export default function AffiliateInvitePage() {
+export default function AffiliateMailerPage() {
   setupStepCheck('light');
   
   const router = useRouter();
@@ -48,6 +48,7 @@ export default function AffiliateInvitePage() {
           companyName: activeCompany?.company_name,
           campaignId: data?.campaign_id,
           emailInvites: data?.invite_emails,
+          logoUrl: activeCompany?.company_image !== null && activeCompany?.company_image?.length > 0 ? process.env.NEXT_PUBLIC_SUPABASE_STORAGE_URL+activeCompany?.company_image : null,
           emailSubject: data?.email_subject?.length > 0 ? data?.email_subject : null,
           emailContent: data?.email_content?.length > 0 ? data?.email_content : null
         },

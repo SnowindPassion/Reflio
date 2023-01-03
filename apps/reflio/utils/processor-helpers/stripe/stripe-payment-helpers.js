@@ -1,6 +1,7 @@
 import { supabaseAdmin } from '@/utils/supabase-admin';
 import { stripe } from '@/utils/stripe';
 import { LogSnagPost } from '@/utils/helpers';
+import { sendEmail } from '@/utils/sendEmail';
 
 export const invoicePayment = async(referralData, stripeId, referralId, paymentIntent, invoiceId) => {  
   const invoice = await stripe.invoices.retrieve(
@@ -87,6 +88,8 @@ export const invoicePayment = async(referralData, stripeId, referralId, paymentI
         {stripeAccount: stripeId}
       );
 
+      await sendEmail(null, null, null, 'new-commission', newCommissionValues?.data[0]?.company_id, newCommissionValues?.data[0]?.commission_id);
+      await sendEmail(null, null, null, 'new-commission-affiliate', newCommissionValues?.data[0]?.company_id, newCommissionValues?.data[0]?.commission_id);
       await LogSnagPost('commission-created', `New commission registered for campaign ${referralData?.data?.campaign_id}`);
 
       return newCommissionValues?.data[0]?.commission_id;
@@ -171,6 +174,10 @@ export const chargePayment = async(referralData, stripeId, referralId, paymentIn
         {metadata: {reflio_referral_id: newCommissionValues?.data[0]?.referral_id}},
         {stripeAccount: stripeId}
       );
+
+      await sendEmail(null, null, null, 'new-commission', newCommissionValues?.data[0]?.company_id, newCommissionValues?.data[0]?.commission_id);
+      await sendEmail(null, null, null, 'new-commission-affiliate', newCommissionValues?.data[0]?.company_id, newCommissionValues?.data[0]?.commission_id);
+      await LogSnagPost('commission-created', `New commission registered for campaign ${referralData?.data?.campaign_id}`);
 
       validCharges?.map(async charge => {
         //Add parameter to Stripe invoice

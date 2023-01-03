@@ -1,4 +1,4 @@
-export default function inviteUser(){
+export default function defaultEmailTemplate(){
   return(
     `<html>
       <head>
@@ -107,7 +107,7 @@ export default function inviteUser(){
                                             <tbody>
                                               <tr>
                                                 <td class="button__cell" style="font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;Roboto&quot;, &quot;Oxygen&quot;, &quot;Ubuntu&quot;, &quot;Cantarell&quot;, &quot;Fira Sans&quot;, &quot;Droid Sans&quot;, &quot;Helvetica Neue&quot;, sans-serif; border-radius: 30px;" align="center"   bgcolor="#1b1b1b">
-                                                  <a href="{{inviteURL}}" class="button__text" style="font-size: 16px; text-decoration: none; display: block; color: #fff; padding: 18px 35px; color: #FFFFFF">Accept Invite</a>
+                                                  <a href="{{buttonURL}}" class="button__text" style="font-size: 16px; text-decoration: none; display: block; color: #fff; padding: 18px 35px; color: #FFFFFF">{{buttonText}}</a>
                                                 </td>
                                               </tr>
                                             </tbody>

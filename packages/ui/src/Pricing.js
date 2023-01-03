@@ -51,8 +51,8 @@ export const Pricing = ({ products }) => {
               <div className="p-6">
                 <h2 className="text-2xl leading-6 font-semibold text-gray-900">*Free</h2>
                 <p className="mt-8">
-                  <span className="text-4xl font-extrabold text-gray-900">9%</span>
-                  <span className="text-base font-medium text-gray-500"> fee per referral*</span>
+                  <span className="text-2xl font-extrabold text-gray-900">9%</span>
+                  <span className="text-base font-medium text-gray-500"> fee per successful referral*</span>
                 </p>
                 <Button
                   medium
@@ -88,7 +88,7 @@ export const Pricing = ({ products }) => {
                     </h2>
                     <p className="mt-8">
                       <span className={`${product?.name === "Pro" ? 'text-white' : 'text-gray-900'} text-4xl font-extrabold`}>{priceString}</span>
-                      <span className={`${product?.name === "Pro" ? 'text-white' : 'text-gray-500'} text-base font-medium`}>/mo - <span className="text-sm">(0% fee)</span></span>
+                      <span className={`${product?.name === "Pro" ? 'text-white' : 'text-gray-500'} text-xl font-medium`}>/mo - <span className="text-base">(0% fee)</span></span>
                     </p>
                     <Button
                       disabled={planDetails === product?.name}

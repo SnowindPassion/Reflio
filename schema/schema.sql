@@ -253,6 +253,31 @@ create policy "Can insert own user data." on commissions for insert with check (
 create policy "Can delete own user data." on commissions for delete using (is_member_of(auth.uid(), team_id));
 
 /**
+* AffiliateMail
+* Note: this is a private table that contains a mapping of user IDs and commissions.
+*/
+create table affiliate_emails (
+  -- UUID from auth.users
+  id uuid references auth.users not null,
+  team_id text references teams not null,
+  affiliate_email_id text primary key unique not null default generate_uid(20) unique,
+  company_id text references companies,
+  campaign_id text references campaigns,
+  affiliate_id text references affiliates,
+  referral_id text references referrals,
+  email_type text,
+  email_subject text,
+  email_body text,
+  email_sent boolean default false,
+  created timestamp with time zone default timezone('utc'::text, now()) not null
+);
+alter table commissions enable row level security;
+create policy "Can view own user data." on commissions for select using (is_member_of(auth.uid(), team_id));
+create policy "Can update own user data." on commissions for update using (is_member_of(auth.uid(), team_id));
+create policy "Can insert own user data." on commissions for insert with check (is_member_of(auth.uid(), team_id));
+create policy "Can delete own user data." on commissions for delete using (is_member_of(auth.uid(), team_id));
+
+/**
 * This trigger automatically creates a user entry when a new user signs up via Supabase Auth.
 */ 
 create function public.handle_new_user() 

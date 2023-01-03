@@ -6,7 +6,7 @@ import { withSentry } from '@sentry/nextjs';
 const inviteUser = async (req, res) => {
   if (req.method === 'POST') {
     const token = req.headers.token;
-    const { companyId, companyHandle, companyName, campaignId, emailInvites, logoUrl, emailSubject, emailContent } = req.body;
+    const { companyId, companyName, campaignId, emailInvites, logoUrl, emailSubject, emailContent } = req.body;
     
     try {
       const user = await getUser(token);
@@ -25,7 +25,7 @@ const inviteUser = async (req, res) => {
           const invite = await inviteAffiliate(user, companyId, campaignId, emailInvites);
 
           if(invite === "success"){
-            await sendEmail(logoUrl, emailSubject, emailContent, emailInvites, 'invite', companyName, campaignId, companyHandle);
+            await sendEmail(emailSubject, emailContent, emailInvites, 'invite', companyId, null);
             
             return res.status(200).json({ response: 'success' });
           }
@@ -34,7 +34,7 @@ const inviteUser = async (req, res) => {
             const invite = await inviteAffiliate(user, companyId, campaignId, inviteEmail);
 
             if(invite === "success"){
-              await sendEmail(logoUrl, emailSubject, emailContent, inviteEmail, 'invite', companyName, campaignId, companyHandle);
+              await sendEmail(emailSubject, emailContent, inviteEmail, 'invite', companyId, null);
             }
           }));
         }

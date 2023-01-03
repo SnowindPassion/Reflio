@@ -60,9 +60,17 @@ module.exports = {
       lineHeight: {
         'extra-loose': '2.2'
       },
+      keyframes: {
+        fadein: {
+          '0%': { opacity: 0 },
+          '100%': { opacity: 1 },
+        },
+      },
       animation: {
         'pulse-fast': 'pulse 0.75s linear infinite',
-      }
+        'fadeinfast': 'fadein 0.75s ease-in-out',
+        'fadeinslow': 'fadein 1.25s ease-in-out'
+      },
     }
   },
   variants: {

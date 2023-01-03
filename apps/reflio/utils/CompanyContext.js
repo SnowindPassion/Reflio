@@ -32,7 +32,7 @@ export const CompanyContextProvider = (props) => {
     }
   }
   
-  if(userCompanyDetails !== null && userCompanyDetails?.length > 0 && router?.asPath === '/dashboard'){
+  if(userCompanyDetails !== null && userCompanyDetails?.length > 0 && (router?.asPath === '/dashboard' || router?.asPath === '/dashboard#')){
     userCompanyDetails?.filter(company=>company?.active_company === true)?.length > 0 ?      
       router.replace('/dashboard/'+userCompanyDetails?.filter(company=>company?.active_company === true)[0].company_id+'')
     : 
